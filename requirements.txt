@@ -1,0 +1,22 @@
+# Core Backend
+fastapi==0.110.0
+uvicorn==0.38.0
+python-multipart==0.0.9
+pydantic==2.7.4
+
+# AI & Audio
+faster-whisper==1.2.1
+ctranslate2==4.6.2
+onnxruntime==1.23.2
+av==16.0.1
+
+# Google Gemini
+google-genai
+
+# Frontend
+streamlit==1.36.0
+requests==2.32.3
+
+# Utilities
+numpy==2.3.5
+tqdm==4.67.1
