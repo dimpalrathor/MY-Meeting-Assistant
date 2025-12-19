@@ -23,7 +23,7 @@ if not GEMINI_API_KEY:
     raise RuntimeError("GEMINI_API_KEY missing")
 
 genai.configure(api_key=GEMINI_API_KEY)
-GEMINI_MODEL = genai.GenerativeModel("gemini-1.5-flash")
+GEMINI_MODEL = genai.GenerativeModel("gemini-2.5-flash-lite")
 
 # =========================
 # FASTAPI APP
@@ -178,3 +178,4 @@ async def summarize(audio: UploadFile = File(...)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
