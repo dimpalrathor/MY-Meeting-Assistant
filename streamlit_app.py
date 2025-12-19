@@ -57,7 +57,7 @@ if st.session_state.step == 1:
                     "duration": duration,
                     "attendees": attendees,
                 },
-                timeout=30,
+                timeout=100,
             )
 
             data = resp.json()
@@ -146,7 +146,7 @@ elif st.session_state.step == 4:
             resp = requests.post(
                 f"{BACKEND_URL}/summarize",
                 files={"audio": st.session_state.audio_file},
-                timeout=120,
+                timeout=300,
             )
             data = resp.json()
         except Exception as e:
@@ -191,3 +191,4 @@ elif st.session_state.step == 4:
     if st.button("🔁 Start New Meeting"):
         st.session_state.clear()
         st.rerun()
+
