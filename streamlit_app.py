@@ -5,7 +5,7 @@ import requests
 # ==================================================
 # LOCALHOST BACKEND
 # ==================================================
-BACKEND_URL = "http://localhost:8000"
+BACKEND_URL = "https://my-meeting-assistant.onrender.com/summarize"
 
 st.set_page_config(
     page_title="Smart Meeting Assistant",
@@ -124,3 +124,4 @@ elif st.session_state.step == 4:
     if st.button("New Meeting"):
         st.session_state.clear()
         st.rerun()
+
