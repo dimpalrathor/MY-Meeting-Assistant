@@ -3,9 +3,9 @@ import streamlit as st
 import requests
 
 # ==================================================
-# LOCALHOST BACKEND
+# BACKEND (RENDER)
 # ==================================================
-BACKEND_URL = "https://my-meeting-assistant.onrender.com/summarize"
+BACKEND_URL = "https://my-meeting-assistant.onrender.com"
 
 st.set_page_config(
     page_title="Smart Meeting Assistant",
@@ -35,19 +35,24 @@ if st.session_state.step == 1:
         title = st.text_input("Meeting Title")
         objective = st.text_area("Meeting Objective")
         duration = st.number_input("Duration (minutes)", 15, 180, 60)
-        attendees = st.text_area("Attendees & Roles (e.g. Rahul – Backend, Priya – PM)")
+        attendees = st.text_area(
+            "Attendees & Roles (e.g. Rahul – Backend, Priya – PM)"
+        )
 
         if st.form_submit_button("Generate Meeting Plan"):
-            resp = requests.post(
-                f"{BACKEND_URL}/plan",
-                json={
-                    "company_name": company,
-                    "title": title,
-                    "objective": objective,
-                    "duration": duration,
-                    "attendees": attendees,
-                },
-            )
+            with st.spinner("Generating meeting plan..."):
+                resp = requests.post(
+                    f"{BACKEND_URL}/plan",
+                    json={
+                        "company_name": company,
+                        "title": title,
+                        "objective": objective,
+                        "duration": duration,
+                        "attendees": attendees,
+                    },
+                    timeout=60,
+                )
+
             data = resp.json()
 
             if resp.status_code == 200 and data.get("plan"):
@@ -57,7 +62,6 @@ if st.session_state.step == 1:
             else:
                 st.error("❌ Failed to generate meeting plan.")
                 st.json(data)
-
 
 # ==================================================
 # STEP 2: SHOW PLAN
@@ -100,12 +104,13 @@ elif st.session_state.step == 4:
     with st.spinner("Analyzing meeting..."):
         resp = requests.post(
             f"{BACKEND_URL}/summarize",
-            files={"audio": st.session_state.audio}
+            files={"audio": st.session_state.audio},
+            timeout=120,
         )
         data = resp.json()
 
     st.subheader("📌 Summary")
-    st.write(data["summary"])
+    st.write(data.get("summary", "No summary available."))
 
     st.subheader("✅ Action Points")
     for a in data.get("action_points", []):
@@ -113,15 +118,18 @@ elif st.session_state.step == 4:
 
     st.subheader("🧑‍💻 Tasks Assigned")
     for t in data.get("tasks", []):
-        st.write(f"**{t['assignee']}** → {t['task']} ({t['deadline']})")
+        st.write(
+            f"**{t.get('assignee','Unknown')}** → "
+            f"{t.get('task','')} "
+            f"({t.get('deadline','No deadline')})"
+        )
 
     st.subheader("📧 Follow-up Email")
-    st.text_area("", data["followup_email"], height=250)
+    st.text_area("", data.get("followup_email", ""), height=250)
 
     st.subheader("💬 WhatsApp Message")
-    st.text_area("", data["whatsapp"], height=150)
+    st.text_area("", data.get("whatsapp", ""), height=150)
 
     if st.button("New Meeting"):
         st.session_state.clear()
         st.rerun()
-
