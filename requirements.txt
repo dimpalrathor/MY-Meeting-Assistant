@@ -22,4 +22,5 @@ requests==2.32.3
 numpy==2.3.5
 tqdm==4.67.1
 
+torch>=2.1.0
 
