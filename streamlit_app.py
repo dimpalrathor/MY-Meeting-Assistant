@@ -37,8 +37,8 @@ if st.session_state.step == 1:
                 },
             )
             data = r.json()
-            if "plan" in data:
-                st.session_state.plan = data["plan"]
+            if resp.status_code == 200 and data.get("plan"):
+                st.session_state.meeting_plan = data["plan"]
                 st.session_state.step = 2
                 st.rerun()
             else:
@@ -139,3 +139,4 @@ elif st.session_state.step == 4:
     if st.button("New Meeting"):
         st.session_state.clear()
         st.rerun()
+
