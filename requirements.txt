@@ -3,6 +3,7 @@ fastapi==0.110.0
 uvicorn==0.38.0
 python-multipart==0.0.9
 pydantic==2.7.4
+pydub
 
 # AI & Audio
 faster-whisper==1.2.1
@@ -20,4 +21,5 @@ requests==2.32.3
 # Utilities
 numpy==2.3.5
 tqdm==4.67.1
+
 
