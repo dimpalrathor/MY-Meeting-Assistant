@@ -52,8 +52,8 @@ class MeetingPlan(BaseModel):
 # =========================
 whisper = WhisperModel(
     "small",
-    device="cuda",
-    compute_type="float16"
+    device="cpu",
+    compute_type="int8"
 )
 
 # =========================
@@ -178,6 +178,7 @@ async def summarize(audio: UploadFile = File(...)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 
 
